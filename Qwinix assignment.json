@@ -1,0 +1,3064 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_qwinakasps2_createMode": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+
+"lb1_dnname": {
+"defaultValue": null,
+            "type": "String"
+}
+,
+"OS_Password": {
+"defaultValue": null,
+            "type": "SecureString"
+}
+,
+
+"lb2_dnname": {
+"defaultValue": null,
+            "type": "String"
+},
+
+        "actionGroups_ag1_name": {
+            "defaultValue": "ag1",
+            "type": "String"
+        },
+        "activityLogAlerts_ar1_name": {
+            "defaultValue": "ar1",
+            "type": "String"
+        },
+        "activityLogAlerts_ar2_name": {
+            "defaultValue": "ar2",
+            "type": "String"
+        },
+        "servers_qwinakasps2_name": {
+            "defaultValue": "qwinakasps2",
+            "type": "String"
+        },
+        "loadBalancers_qwinakasss1lb_name": {
+            "defaultValue": "qwinakasss1lb",
+            "type": "String"
+        },
+        "loadBalancers_qwinakasss2lb_name": {
+            "defaultValue": "qwinakasss2lb",
+            "type": "String"
+        },
+        "virtualNetworks_qwinakasvn1_name": {
+            "defaultValue": "qwinakasvn1",
+            "type": "String"
+        },
+        "storageAccounts_qwinakassa1_name": {
+            "defaultValue": "qwinakassa1",
+            "type": "String"
+        },
+        "publicIPAddresses_qwinakasan1_name": {
+            "defaultValue": "qwinakasan1",
+            "type": "String"
+        },
+        "publicIPAddresses_qwinakasan2_name": {
+            "defaultValue": "qwinakasan2",
+            "type": "String"
+        },
+        "virtualMachineScaleSets_qwinakasss1_name": {
+            "defaultValue": "qwinakasss1",
+            "type": "String"
+        },
+        "virtualMachineScaleSets_qwinakasss2_name": {
+            "defaultValue": "qwinakasss2",
+            "type": "String"
+        },
+        "networkSecurityGroups_qwinakasss1nsg_name": {
+            "defaultValue": "qwinakasss1nsg",
+            "type": "String"
+        },
+        "networkSecurityGroups_qwinakasss2nsg_name": {
+            "defaultValue": "qwinakasss2nsg",
+            "type": "String"
+        },
+        "autoscalesettings_cpuautoscaleqwinakass_name": {
+            "defaultValue": "cpuautoscaleqwinakass",
+            "type": "String"
+        },
+        "disks_qwinakasss1_qwinakasss1_0_OsDisk_1_4843de014b3141a0856f471b9af98362_externalid": {
+            "defaultValue": "/subscriptions/278b45f2-d168-46c2-b6f2-d8e214273222/resourceGroups/qwinakasrg1/providers/Microsoft.Compute/disks/qwinakasss1_qwinakasss1_0_OsDisk_1_4843de014b3141a0856f471b9af98362",
+            "type": "String"
+        },
+        "disks_qwinakasss1_qwinakasss1_2_OsDisk_1_44454a95c72f45c08c584b5c76049ced_externalid": {
+            "defaultValue": "/subscriptions/278b45f2-d168-46c2-b6f2-d8e214273222/resourceGroups/qwinakasrg1/providers/Microsoft.Compute/disks/qwinakasss1_qwinakasss1_2_OsDisk_1_44454a95c72f45c08c584b5c76049ced",
+            "type": "String"
+        },
+        "disks_qwinakasss2_qwinakasss2_0_OsDisk_1_b894996c60794b44a2826845a8bf30a1_externalid": {
+            "defaultValue": "/subscriptions/278b45f2-d168-46c2-b6f2-d8e214273222/resourceGroups/qwinakasrg1/providers/Microsoft.Compute/disks/qwinakasss2_qwinakasss2_0_OsDisk_1_b894996c60794b44a2826845a8bf30a1",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[parameters('servers_qwinakasps2_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "GP_Gen5_2",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
+            },
+            "properties": {
+                "storageProfile": {
+                    "storageMB": 102400,
+                    "backupRetentionDays": 7,
+                    "geoRedundantBackup": "Disabled"
+                },
+                "version": "10",
+                "sslEnforcement": "Enabled",
+                "createMode": "[parameters('servers_qwinakasps2_createMode')]"
+            }
+        },
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('actionGroups_ag1_name')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "[parameters('actionGroups_ag1_name')]",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "at1_-EmailAction-",
+                        "emailAddress": "akashsharma26@gmail.com",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('networkSecurityGroups_qwinakasss1nsg_name')]",
+            "location": "eastus",
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "6ee116b4-dc82-48a4-bc34-c17cdb91a052",
+                "securityRules": [
+                    {
+                        "name": "allowSSH",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow SSH traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "allowHTTP",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow web traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"29e85572-997c-4d19-9385-8b06be59daa6\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('networkSecurityGroups_qwinakasss2nsg_name')]",
+            "location": "eastus",
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "3fe2870a-e5e5-46f4-a5b9-b4ad3d2c3ecf",
+                "securityRules": [
+                    {
+                        "name": "allowSSH",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow SSH traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "allowHTTP",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow web traffic",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"5680a4f9-e6d6-44d4-b3a0-03addcea280e\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('publicIPAddresses_qwinakasan1_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "7831d816-5026-43bc-b4b0-dd9f8b028b5e",
+                "ipAddress": "52.224.205.198",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('lb1_dnname')]",  
+                    "fqdn": "[concat (parameters('lb1_dnname'), '.eastus.cloudapp.azure.com')]"
+                },
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('publicIPAddresses_qwinakasan2_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "2f9da816-4371-4105-901d-61cf35f1b777",
+                "ipAddress": "40.90.246.208",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('lb2_dnname')]", 
+                    "fqdn": "[concat (parameters('lb2_dnname'), '.eastus.cloudapp.azure.com')]"
+                },
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('storageAccounts_qwinakassa1_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/array_nulls')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/azure.replication_support')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "OFF",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/backslash_quote')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "safe_encoding",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/bytea_output')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "hex",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/check_function_bodies')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/client_encoding')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "sql_ascii",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/client_min_messages')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "notice",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/connection_throttling')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/constraint_exclusion')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "partition",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/cpu_index_tuple_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.005",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/cpu_operator_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.0025",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/cpu_tuple_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.01",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/cursor_tuple_fraction')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.1",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/datestyle')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "iso, mdy",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/deadlock_timeout')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "1000",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/debug_print_parse')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/debug_print_plan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/debug_print_rewritten')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_statistics_target')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "100",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_text_search_config')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "pg_catalog.english",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_transaction_deferrable')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_transaction_isolation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "read committed",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_transaction_read_only')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/default_with_oids')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_bitmapscan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_hashagg')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_hashjoin')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_indexonlyscan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_indexscan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_material')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_mergejoin')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_nestloop')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_seqscan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_sort')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/enable_tidscan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/escape_string_warning')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/exit_on_error')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/extra_float_digits')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/force_parallel_mode')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/from_collapse_limit')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "8",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_effort')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "5",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_generations')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_pool_size')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_seed')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_selection_bias')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "2.0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/geqo_threshold')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "12",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/gin_fuzzy_search_limit')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/hot_standby_feedback')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/idle_in_transaction_session_timeout')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/intervalstyle')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "postgres",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/join_collapse_limit')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "8",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/lock_timeout')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_checkpoints')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_connections')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_disconnections')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_duration')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_error_verbosity')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "default",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_lock_waits')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_min_duration_statement')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "-1",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_min_error_statement')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "error",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_min_messages')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "warning",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_retention_days')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "3",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_statement')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "none",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/log_statement_stats')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/max_parallel_workers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "8",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/max_parallel_workers_per_gather')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "2",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/max_prepared_transactions')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/max_standby_archive_delay')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "30000",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/max_standby_streaming_delay')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "30000",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/min_parallel_index_scan_size')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "524288",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/min_parallel_table_scan_size')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "8388608",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/parallel_setup_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "1000",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/parallel_tuple_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0.1",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_qs.max_query_text_length')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "6000",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_qs.query_capture_mode')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "none",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_qs.replace_parameter_placeholders')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_qs.retention_period_in_days')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "7",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_qs.track_utility')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pg_stat_statements.track')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "top",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pgms_wait_sampling.history_period')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "100",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/pgms_wait_sampling.query_capture_mode')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "none",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/postgis.gdal_enabled_drivers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "DISABLE_ALL",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/quote_all_identifiers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/random_page_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "4.0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/search_path')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "\"$user\", public",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/seq_page_cost')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "1.0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/shared_preload_libraries')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/statement_timeout')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/synchronize_seqscans')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/synchronous_commit')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "on",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/temp_buffers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "8192",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/timezone')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "UTC",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/transform_null_equals')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "off",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/vacuum_defer_cleanup_age')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "0",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/work_mem')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "4096",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/xmlbinary')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "base64",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/configurations",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/xmloption')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "value": "content",
+                "source": "system-default"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/databases",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/azure_maintenance')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "charset": "UTF8",
+                "collation": "English_United States.1252"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/databases",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/azure_sys')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "charset": "UTF8",
+                "collation": "English_United States.1252"
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/databases",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/postgres')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]"
+            ],
+            "properties": {
+                "charset": "UTF8",
+                "collation": "English_United States.1252"
+            }
+        },
+        {
+            "type": "microsoft.insights/activityLogAlerts",
+            "apiVersion": "2017-04-01",
+            "name": "[parameters('activityLogAlerts_ar1_name')]",
+            "location": "Global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_ag1_name'))]"
+            ],
+            "properties": {
+                "scopes": [
+                    "/subscriptions/278b45f2-d168-46c2-b6f2-d8e214273222"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Administrative"
+                        },
+                        {
+                            "field": "resourceType",
+                            "equals": "microsoft.compute/virtualmachinescalesets"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Compute/virtualMachineScaleSets/write"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_ag1_name'))]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true
+            }
+        },
+        {
+            "type": "microsoft.insights/activityLogAlerts",
+            "apiVersion": "2017-04-01",
+            "name": "[parameters('activityLogAlerts_ar2_name')]",
+            "location": "Global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_ag1_name'))]"
+            ],
+            "properties": {
+                "scopes": [
+                    "/subscriptions/278b45f2-d168-46c2-b6f2-d8e214273222"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "Administrative"
+                        },
+                        {
+                            "field": "resourceType",
+                            "equals": "microsoft.compute/virtualmachinescalesets"
+                        },
+                        {
+                            "field": "operationName",
+                            "equals": "Microsoft.Compute/virtualMachineScaleSets/delete/action"
+                        }
+                    ]
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_ag1_name'))]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true
+            }
+        },
+        {
+            "type": "microsoft.insights/autoscalesettings",
+            "apiVersion": "2014-04-01",
+            "name": "[parameters('autoscalesettings_cpuautoscaleqwinakass_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]"
+            ],
+            "properties": {
+                "profiles": [
+                    {
+                        "name": "Profile1",
+                        "capacity": {
+                            "minimum": "2",
+                            "maximum": "10",
+                            "default": "2"
+                        },
+                        "rules": [
+                            {
+                                "metricTrigger": {
+                                    "metricName": "Percentage CPU",
+                                    "metricNamespace": "",
+                                    "metricResourceUri": "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]",
+                                    "timeGrain": "PT1M",
+                                    "statistic": "Average",
+                                    "timeWindow": "PT5M",
+                                    "timeAggregation": "Average",
+                                    "operator": "GreaterThan",
+                                    "threshold": 80,
+                                    "dimensions": null,
+                                    "dividePerInstance": false
+                                },
+                                "scaleAction": {
+                                    "direction": "Increase",
+                                    "type": "ChangeCount",
+                                    "value": "1",
+                                    "cooldown": "PT1M"
+                                }
+                            },
+                            {
+                                "metricTrigger": {
+                                    "metricName": "Percentage CPU",
+                                    "metricNamespace": "",
+                                    "metricResourceUri": "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]",
+                                    "timeGrain": "PT1M",
+                                    "statistic": "Average",
+                                    "timeWindow": "PT5M",
+                                    "timeAggregation": "Average",
+                                    "operator": "LessThan",
+                                    "threshold": 20,
+                                    "dimensions": null,
+                                    "dividePerInstance": false
+                                },
+                                "scaleAction": {
+                                    "direction": "Decrease",
+                                    "type": "ChangeCount",
+                                    "value": "1",
+                                    "cooldown": "PT1M"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "enabled": true,
+                "name": "[parameters('autoscalesettings_cpuautoscaleqwinakass_name')]",
+                "targetResourceUri": "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('loadBalancers_qwinakasss1lb_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_qwinakasan1_name'))]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "9d09536e-6d10-42f6-a20b-b9b71c6fdb4f",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_qwinakasan1_name'))]"
+                            },
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "bepool",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded"
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LBRule",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false,
+                            "loadDistribution": "Default",
+                            "disableOutboundSnat": false,
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/backendAddressPools/bepool')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/probes/tcpProbe')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "tcpProbe",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "natpool.0",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            },
+                            "frontendPort": 50000,
+                            "backendPort": 22,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    },
+                    {
+                        "name": "natpool.2",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            },
+                            "frontendPort": 50002,
+                            "backendPort": 22,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    }
+                ],
+                "outboundRules": [],
+                "inboundNatPools": [
+                    {
+                        "name": "natpool",
+                        "etag": "W/\"8af98da2-3134-47f3-af91-ac13e5fd5ce3\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendPortRangeStart": 50000,
+                            "frontendPortRangeEnd": 50119,
+                            "backendPort": 22,
+                            "protocol": "Tcp",
+                            "idleTimeoutInMinutes": 4,
+                            "enableFloatingIP": false,
+                            "enableTcpReset": false,
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('loadBalancers_qwinakasss2lb_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_qwinakasan2_name'))]"
+            ],
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "dca73d7a-2f7e-420a-98f2-002ea8fabb7c",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_qwinakasan2_name'))]"
+                            },
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "bepool",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded"
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LBRule",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false,
+                            "loadDistribution": "Default",
+                            "disableOutboundSnat": false,
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/backendAddressPools/bepool')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/probes/tcpProbe')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "tcpProbe",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "Tcp",
+                            "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [
+                    {
+                        "name": "natpool.0",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            },
+                            "frontendPort": 50000,
+                            "backendPort": 22,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "enableTcpReset": false
+                        }
+                    }
+                ],
+                "outboundRules": [],
+                "inboundNatPools": [
+                    {
+                        "name": "natpool",
+                        "etag": "W/\"9212e5ee-eb3d-4da6-b809-21570af28a35\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendPortRangeStart": 50000,
+                            "frontendPortRangeEnd": 50119,
+                            "backendPort": 22,
+                            "protocol": "Tcp",
+                            "idleTimeoutInMinutes": 4,
+                            "enableFloatingIP": false,
+                            "enableTcpReset": false,
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('loadBalancers_qwinakasss1lb_name'), '/natpool.0')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                },
+                "frontendPort": 50000,
+                "backendPort": 22,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('loadBalancers_qwinakasss2lb_name'), '/natpool.0')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                },
+                "frontendPort": 50000,
+                "backendPort": 22,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('loadBalancers_qwinakasss1lb_name'), '/natpool.2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfiguration": {
+                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/frontendIPConfigurations/LoadBalancerFrontEnd')]"
+                },
+                "frontendPort": 50002,
+                "backendPort": 22,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 4,
+                "protocol": "Tcp",
+                "enableTcpReset": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_qwinakasss1nsg_name'), '/allowHTTP')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow web traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1001,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_qwinakasss2nsg_name'), '/allowHTTP')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow web traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1001,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_qwinakasss1nsg_name'), '/allowSSH')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow SSH traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "22",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('networkSecurityGroups_qwinakasss2nsg_name'), '/allowSSH')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "description": "Allow SSH traffic",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "22",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('virtualNetworks_qwinakasvn1_name'), '/qwinakassn3')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_qwinakasvn1_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.1.1.0/25",
+                "serviceEndpoints": [],
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('virtualNetworks_qwinakasvn1_name'), '/qwinakasssn4')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_qwinakasvn1_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.1.1.128/25",
+                "serviceEndpoints": [
+                    {
+                        "provisioningState": "Succeeded",
+                        "service": "Microsoft.Sql",
+                        "locations": [
+                            "eastus"
+                        ]
+                    }
+                ],
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_qwinakassa1_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_qwinakassa1_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('virtualMachineScaleSets_qwinakasss2_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn2')]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_DS1_v2",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "properties": {
+                "singlePlacementGroup": true,
+                "upgradePolicy": {
+                    "mode": "Manual"
+                },
+                "virtualMachineProfile": {
+                    "osProfile": {
+                        "computerNamePrefix": "qwinakass",
+                        "adminUsername": "akaqwin1221",
+                        "adminPassword": "[parameters('OS_Password')]",
+
+                        "linuxConfiguration": {
+                            "disablePasswordAuthentication": false,
+                            "provisionVMAgent": true
+                        },
+                        "secrets": []
+                    },
+                    "storageProfile": {
+                        "osDisk": {
+                            "createOption": "FromImage",
+                            "caching": "ReadWrite",
+                            "managedDisk": {
+                                "storageAccountType": "Premium_LRS"
+                            }
+                        },
+                        "imageReference": {
+                            "publisher": "Canonical",
+                            "offer": "UbuntuServer",
+                            "sku": "16.04-LTS",
+                            "version": "latest"
+                        }
+                    },
+                    "networkProfile": {
+                        "networkInterfaceConfigurations": [
+                            {
+                                "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss2_name'), 'Nic')]",
+                                "properties": {
+                                    "primary": true,
+                                    "enableAcceleratedNetworking": false,
+                                    "dnsSettings": {
+                                        "dnsServers": []
+                                    },
+                                    "enableIPForwarding": false,
+                                    "ipConfigurations": [
+                                        {
+                                            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss2_name'), 'IpConfig')]",
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn2')]"
+                                                },
+                                                "privateIPAddressVersion": "IPv4",
+                                                "loadBalancerBackendAddressPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/backendAddressPools/bepool')]"
+                                                    }
+                                                ],
+                                                "loadBalancerInboundNatPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/inboundNatPools/natpool')]"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "priority": "Regular"
+                },
+                "overprovision": true,
+                "doNotRunExtensionsOnOverprovisionedVMs": false
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss1_name'), '/customScript10')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]",
+                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('storageAccounts_qwinakassa1_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Creating",
+                "autoUpgradeMinorVersion": false,
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "fileUris": [
+                        "[concat('https://', parameters('storageAccounts_qwinakassa1_name'), '.blob.core.windows.net/qwinakasbc1/ss1.sh')]"
+                    ],
+                    "commandToExecute": "sh ss1.sh"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DBforPostgreSQL/servers/virtualNetworkRules",
+            "apiVersion": "2017-12-01",
+            "name": "[concat(parameters('servers_qwinakasps2_name'), '/vnr1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('servers_qwinakasps2_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakasssn4')]"
+            ],
+            "properties": {
+                "virtualNetworkSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakasssn4')]",
+                "ignoreMissingVnetServiceEndpoint": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('virtualNetworks_qwinakasvn1_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "ddd9771a-09c0-461e-aa57-31852147e35d",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.1.0.0/22"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "qwinakassn1",
+                        "etag": "W/\"722e6dfe-9b75-42bf-8c88-6315ff645999\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.1.0.0/25",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]"
+                            },
+                            "delegations": []
+                        }
+                    },
+                    {
+                        "name": "qwinakassn2",
+                        "etag": "W/\"722e6dfe-9b75-42bf-8c88-6315ff645999\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.1.0.128/25",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+                            },
+                            "serviceEndpoints": [],
+                            "delegations": []
+                        }
+                    },
+                    {
+                        "name": "qwinakassn3",
+                        "etag": "W/\"722e6dfe-9b75-42bf-8c88-6315ff645999\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.1.1.0/25",
+                            "serviceEndpoints": [],
+                            "delegations": []
+                        }
+                    },
+                    {
+                        "name": "qwinakasssn4",
+                        "etag": "W/\"722e6dfe-9b75-42bf-8c88-6315ff645999\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.1.1.128/25",
+                            "serviceEndpoints": [
+                                {
+                                    "provisioningState": "Succeeded",
+                                    "service": "Microsoft.Sql",
+                                    "locations": [
+                                        "eastus"
+                                    ]
+                                }
+                            ],
+                            "delegations": []
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('virtualNetworks_qwinakasvn1_name'), '/qwinakassn1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_qwinakasvn1_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.1.0.0/25",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss1nsg_name'))]"
+                },
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('virtualNetworks_qwinakasvn1_name'), '/qwinakassn2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_qwinakasvn1_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.1.0.128/25",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_qwinakasss2nsg_name'))]"
+                },
+                "serviceEndpoints": [],
+                "delegations": []
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_qwinakassa1_name'), '/default/qwinakasbc1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_qwinakassa1_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_qwinakassa1_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_qwinakassa1_name'), '/default/qwinakasbc2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_qwinakassa1_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_qwinakassa1_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "Container"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('virtualMachineScaleSets_qwinakasss1_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name'))]",
+                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('storageAccounts_qwinakassa1_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_DS1_v2",
+                "tier": "Standard",
+                "capacity": 2
+            },
+            "zones": [
+                "1",
+                "2",
+                "3"
+            ],
+            "identity": {
+                "principalId": null,
+                "tenantId": "93f33571-550f-43cf-b09f-cd331338d086",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "singlePlacementGroup": false,
+                "upgradePolicy": {
+                    "mode": "Manual"
+                },
+                "virtualMachineProfile": {
+                    "osProfile": {
+                        "computerNamePrefix": "qwinakass",
+                        "adminUsername": "akaqwin1221",
+                        "adminPassword": "[parameters('OS_Password')]",
+
+                        "linuxConfiguration": {
+                            "disablePasswordAuthentication": false,
+                            "provisionVMAgent": true
+                        },
+                        "secrets": []
+                    },
+                    "storageProfile": {
+                        "osDisk": {
+                            "createOption": "FromImage",
+                            "caching": "ReadWrite",
+                            "managedDisk": {
+                                "storageAccountType": "Premium_LRS"
+                            }
+                        },
+                        "imageReference": {
+                            "publisher": "Canonical",
+                            "offer": "UbuntuServer",
+                            "sku": "16.04-LTS",
+                            "version": "latest"
+                        }
+                    },
+                    "networkProfile": {
+                        "networkInterfaceConfigurations": [
+                            {
+                                "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss1_name'), 'Nic')]",
+                                "properties": {
+                                    "primary": true,
+                                    "enableAcceleratedNetworking": false,
+                                    "dnsSettings": {
+                                        "dnsServers": []
+                                    },
+                                    "enableIPForwarding": false,
+                                    "ipConfigurations": [
+                                        {
+                                            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss1_name'), 'IpConfig')]",
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]"
+                                                },
+                                                "privateIPAddressVersion": "IPv4",
+                                                "loadBalancerBackendAddressPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/backendAddressPools/bepool')]"
+                                                    }
+                                                ],
+                                                "loadBalancerInboundNatPools": [
+                                                    {
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/inboundNatPools/natpool')]"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "extensionProfile": {
+                        "extensions": [
+                            {
+                                "name": "customScript10",
+                                "properties": {
+                                    "autoUpgradeMinorVersion": false,
+                                    "publisher": "Microsoft.Compute",
+                                    "type": "CustomScriptExtension",
+                                    "typeHandlerVersion": "1.9",
+                                    "settings": {
+                                        "fileUris": [
+                                            "[concat('https://', parameters('storageAccounts_qwinakassa1_name'), '.blob.core.windows.net/qwinakasbc1/ss1.sh')]"
+                                        ],
+                                        "commandToExecute": "sh ss1.sh"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "priority": "Regular"
+                },
+                "overprovision": true,
+                "doNotRunExtensionsOnOverprovisionedVMs": false,
+                "zoneBalance": false,
+                "platformFaultDomainCount": 1
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss1_name'), '/0')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_DS1_v2",
+                "tier": "Standard"
+            },
+            "zones": [
+                "1"
+            ],
+            "identity": {
+                "principalId": null,
+                "tenantId": "93f33571-550f-43cf-b09f-cd331338d086",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "networkProfileConfiguration": {
+                    "networkInterfaceConfigurations": [
+                        {
+                            "name": "qwinakasss1Nic",
+                            "properties": {
+                                "primary": true,
+                                "enableAcceleratedNetworking": false,
+                                "dnsSettings": {
+                                    "dnsServers": []
+                                },
+                                "enableIPForwarding": false,
+                                "ipConfigurations": [
+                                    {
+                                        "name": "qwinakasss1IpConfig",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]"
+                                            },
+                                            "privateIPAddressVersion": "IPv4",
+                                            "loadBalancerBackendAddressPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/backendAddressPools/bepool')]"
+                                                }
+                                            ],
+                                            "loadBalancerInboundNatPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/inboundNatPools/natpool')]"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "16.04.201907080"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "qwinakasss1_qwinakasss1_0_OsDisk_1_4843de014b3141a0856f471b9af98362",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_qwinakasss1_qwinakasss1_0_OsDisk_1_4843de014b3141a0856f471b9af98362_externalid')]"
+                        },
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "qwinakass000000",
+                    "adminUsername": "akaqwin1221",
+                        "adminPassword": "[parameters('OS_Password')]",
+
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets/virtualMachines', parameters('virtualMachineScaleSets_qwinakasss1_name'), '0'), '/networkInterfaces/qwinakasss1Nic')]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss2_name'), '/0')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss2_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn2')]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_DS1_v2",
+                "tier": "Standard"
+            },
+            "properties": {
+                "networkProfileConfiguration": {
+                    "networkInterfaceConfigurations": [
+                        {
+                            "name": "qwinakasss2Nic",
+                            "properties": {
+                                "primary": true,
+                                "enableAcceleratedNetworking": false,
+                                "dnsSettings": {
+                                    "dnsServers": []
+                                },
+                                "enableIPForwarding": false,
+                                "ipConfigurations": [
+                                    {
+                                        "name": "qwinakasss2IpConfig",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn2')]"
+                                            },
+                                            "privateIPAddressVersion": "IPv4",
+                                            "loadBalancerBackendAddressPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/backendAddressPools/bepool')]"
+                                                }
+                                            ],
+                                            "loadBalancerInboundNatPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss2lb_name')), '/inboundNatPools/natpool')]"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "16.04.201907080"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "qwinakasss2_qwinakasss2_0_OsDisk_1_b894996c60794b44a2826845a8bf30a1",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_qwinakasss2_qwinakasss2_0_OsDisk_1_b894996c60794b44a2826845a8bf30a1_externalid')]"
+                        },
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "qwinakass000000",
+                    "adminUsername": "akaqwin1221",
+                        "adminPassword": "[parameters('OS_Password')]",
+
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets/virtualMachines', parameters('virtualMachineScaleSets_qwinakasss2_name'), '0'), '/networkInterfaces/qwinakasss2Nic')]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(parameters('virtualMachineScaleSets_qwinakasss1_name'), '/2')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('virtualMachineScaleSets_qwinakasss1_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]",
+                "[resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_DS1_v2",
+                "tier": "Standard"
+            },
+            "zones": [
+                "3"
+            ],
+            "identity": {
+                "principalId": null,
+                "tenantId": "93f33571-550f-43cf-b09f-cd331338d086",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "networkProfileConfiguration": {
+                    "networkInterfaceConfigurations": [
+                        {
+                            "name": "qwinakasss1Nic",
+                            "properties": {
+                                "primary": true,
+                                "enableAcceleratedNetworking": false,
+                                "dnsSettings": {
+                                    "dnsServers": []
+                                },
+                                "enableIPForwarding": false,
+                                "ipConfigurations": [
+                                    {
+                                        "name": "qwinakasss1IpConfig",
+                                        "properties": {
+                                            "subnet": {
+                                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_qwinakasvn1_name'), 'qwinakassn1')]"
+                                            },
+                                            "privateIPAddressVersion": "IPv4",
+                                            "loadBalancerBackendAddressPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/backendAddressPools/bepool')]"
+                                                }
+                                            ],
+                                            "loadBalancerInboundNatPools": [
+                                                {
+                                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_qwinakasss1lb_name')), '/inboundNatPools/natpool')]"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "hardwareProfile": {},
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "16.04.201907080"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "qwinakasss1_qwinakasss1_2_OsDisk_1_44454a95c72f45c08c584b5c76049ced",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_qwinakasss1_qwinakasss1_2_OsDisk_1_44454a95c72f45c08c584b5c76049ced_externalid')]"
+                        },
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "qwinakass000002",
+                    "adminUsername": "akaqwin1221",
+                        "adminPassword": "[parameters('OS_Password')]",
+
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[concat(resourceId('Microsoft.Compute/virtualMachineScaleSets/virtualMachines', parameters('virtualMachineScaleSets_qwinakasss1_name'), '2'), '/networkInterfaces/qwinakasss1Nic')]"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
